@@ -148,6 +148,9 @@
         ],
         "create-plugin-archive": [
             "vendor/bin/wp dist-archive src --plugin-dirname=bh-wc-csp-condition-ip-address"
+        ],
+        "act": [
+            "act -P ubuntu-latest=shivammathur/node:latest"
         ]
     }
 }
