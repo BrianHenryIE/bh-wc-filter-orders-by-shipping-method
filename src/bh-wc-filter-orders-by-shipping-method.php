@@ -12,8 +12,8 @@
  * @package           BrianHenryIE\WC_Filter_Orders_By_Shipping_Method
  *
  * @wordpress-plugin
- * Plugin Name:       BH WC Filter Orders By Shipping Method
- * Plugin URI:        http://github.com/username/bh-wc-filter-orders-by-shipping-method/
+ * Plugin Name:       Filter Orders by Shipping Method
+ * Plugin URI:        http://github.com/BrianHenryIE/bh-wc-filter-orders-by-shipping-method/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
  * Author:            BrianHenryIE
@@ -22,13 +22,18 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       bh-wc-filter-orders-by-shipping-method
  * Domain Path:       /languages
+ *
+ * @see https://www.skyverge.com/blog/filtering-woocommerce-orders/
  */
 
 namespace BrianHenryIE\WC_Filter_Orders_By_Shipping_Method;
 
+use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\API\API;
+use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\API\API_Interface;
 use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Includes\Activator;
+use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Includes\BH_WC_Filter_Orders_By_Shipping_Method;
 use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Includes\Deactivator;
-use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Includes\BrianHenryIE\WC_Filter_Orders_By_Shipping_Method;
+
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -56,15 +61,18 @@ register_deactivation_hook( __FILE__, array( Deactivator::class, 'deactivate' ) 
  *
  * @since    1.0.0
  */
-function instantiate_bh_wc_filter_orders_by_shipping_method(): BrianHenryIE\WC_Filter_Orders_By_Shipping_Method {
+function instantiate_bh_wc_filter_orders_by_shipping_method(): API_Interface {
 
-	$plugin = new BrianHenryIE\WC_Filter_Orders_By_Shipping_Method();
+	$api = new API();
 
-	return $plugin;
+	new BH_WC_Filter_Orders_By_Shipping_Method( $api );
+
+	return $api;
 }
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and frontend-facing site hooks.
+ * Instance of the plugin's API for use by other plugins.
+ *
+ * @var API_Interface $GLOBALS['bh_wc_filter_orders_by_shipping_method']
  */
-$GLOBALS['bh_wc_filter_orders_by_shipping_method'] = $bh_wc_filter_orders_by_shipping_method = instantiate_bh_wc_filter_orders_by_shipping_method();
+$GLOBALS['bh_wc_filter_orders_by_shipping_method'] = instantiate_bh_wc_filter_orders_by_shipping_method();

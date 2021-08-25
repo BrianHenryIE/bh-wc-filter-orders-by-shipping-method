@@ -8,8 +8,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    BrianHenryIE\WC_Filter_Orders_By_Shipping_Method
- * @subpackage BrianHenryIE\WC_Filter_Orders_By_Shipping_Method/includes
+ * @author     BrianHenryIE <BrianHenryIE@gmail.com>
+ * @package    BH_WC_Filter_Orders_By_Shipping_Method
  */
 
 namespace BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Includes;
@@ -39,9 +39,8 @@ class I18n {
 		load_plugin_textdomain(
 			'bh-wc-filter-orders-by-shipping-method',
 			false,
-			dirname( plugin_basename( __FILE__ ), 2 ) . '/languages/'
+			plugin_basename( dirname( __FILE__, 2 ) ) . '/languages/'
 		);
-
 	}
 
 }

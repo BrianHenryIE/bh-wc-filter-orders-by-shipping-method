@@ -1,0 +1,34 @@
+{
+  "name": "bh-wc-filter-orders-by-shipping-method",
+  "version": "1.0.0",
+  "description": "Filter the admin orders list page by the shipping method used for the order. ",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "postinstall:": "find ./node_modules/@woocommerce/e2e-environment/docker-compose.yaml -exec sed -i '' 's|../../\n../:${WC_E2E_FOLDER_MAPPING}|'$(pwd)'/src/:\\${WC_E2E_FOLDER_MAPPING}|g' {} +",
+    "docker:down": "npx wc-e2e docker:down",
+    "docker:ssh": "npx wc-e2e docker:ssh",
+    "docker:up": "npx wc-e2e docker:up",
+    "test:e2e": "npx wc-e2e test:e2e",
+    "test:e2e-debug": "npx wc-e2e test:e2e-debug",
+    "test:e2e-dev": "npx wc-e2e test:e2e-dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrianHenryIE/bh-wc-filter-orders-by-shipping-method.git"
+  },
+  "author": "BrianHenryIE",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/BrianHenryIE/bh-wc-filter-orders-by-shipping-method/issues"
+  },
+  "homepage": "https://github.com/BrianHenryIE/bh-wc-filter-orders-by-shipping-method#readme",
+  "devDependencies": {
+    "@woocommerce/api": "^0.2.0",
+    "@woocommerce/e2e-environment": "^0.2.2",
+    "@woocommerce/e2e-utils": "^0.1.5",
+    "jest": "^27.0.6"
+  }
+}

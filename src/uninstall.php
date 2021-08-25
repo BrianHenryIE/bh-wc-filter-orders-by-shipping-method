@@ -28,3 +28,5 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+delete_transient( 'bh_wc_filter_orders_by_shipping_method_methods_list' );

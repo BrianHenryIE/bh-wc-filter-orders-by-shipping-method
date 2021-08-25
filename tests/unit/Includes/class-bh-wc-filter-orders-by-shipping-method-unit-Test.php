@@ -6,27 +6,41 @@
 
 namespace BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Includes;
 
+use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\ActionScheduler\Scheduler;
 use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Admin\Admin;
+use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\API\API_Interface;
 use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Frontend\Frontend;
+use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\WooCommerce\Orders_List_Page;
 use WP_Mock\Matcher\AnyInstance;
 
 /**
  * Class BrianHenryIE\WC_Filter_Orders_By_Shipping_Method_Unit_Test
+ *
+ * @coversDefaultClass \BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\Includes\BH_WC_Filter_Orders_By_Shipping_Method
  */
-class BrianHenryIE\WC_Filter_Orders_By_Shipping_Method_Unit_Test extends \Codeception\Test\Unit {
+class BH_WC_Filter_Orders_By_Shipping_Method_Unit_Test extends \Codeception\Test\Unit {
 
-	protected function _before() {
+	protected function setup(): void {
 		\WP_Mock::setUp();
 	}
 
 	// This is required for `'times' => 1` to be verified.
-	protected function _tearDown() {
+	protected function tearDown(): void {
 		parent::_tearDown();
 		\WP_Mock::tearDown();
 	}
 
 	/**
-	 * @covers BrianHenryIE\WC_Filter_Orders_By_Shipping_Method::set_locale
+	 * @covers ::__construct
+	 */
+	public function test_construct(): void {
+
+		$api = $this->makeEmpty( API_Interface::class );
+		new BH_WC_Filter_Orders_By_Shipping_Method( $api );
+	}
+
+	/**
+	 * @covers ::set_locale
 	 */
 	public function test_set_locale_hooked() {
 
@@ -35,43 +49,48 @@ class BrianHenryIE\WC_Filter_Orders_By_Shipping_Method_Unit_Test extends \Codece
 			array( new AnyInstance( I18n::class ), 'load_plugin_textdomain' )
 		);
 
-		new BrianHenryIE\WC_Filter_Orders_By_Shipping_Method();
+		$api = $this->makeEmpty( API_Interface::class );
+		new BH_WC_Filter_Orders_By_Shipping_Method( $api );
 	}
 
 	/**
-	 * @covers BrianHenryIE\WC_Filter_Orders_By_Shipping_Method::define_admin_hooks
+	 * @covers ::define_orders_list_page_hooks
 	 */
-	public function test_admin_hooks() {
+	public function test_orders_list_page_hooks() {
 
 		\WP_Mock::expectActionAdded(
-			'admin_enqueue_scripts',
-			array( new AnyInstance( Admin::class ), 'enqueue_styles' )
+			'restrict_manage_posts',
+			array( new AnyInstance( Orders_List_Page::class ), 'print_filter_orders_by_shipping_method_ui' )
 		);
 
-		\WP_Mock::expectActionAdded(
-			'admin_enqueue_scripts',
-			array( new AnyInstance( Admin::class ), 'enqueue_scripts' )
+		\WP_Mock::expectFilterAdded(
+			'request',
+			array( new AnyInstance( Orders_List_Page::class ), 'filter_orders_by_shipping_method_query' )
 		);
 
-		new BrianHenryIE\WC_Filter_Orders_By_Shipping_Method();
+		$api = $this->makeEmpty( API_Interface::class );
+		new BH_WC_Filter_Orders_By_Shipping_Method( $api );
 	}
+
 
 	/**
-	 * @covers BrianHenryIE\WC_Filter_Orders_By_Shipping_Method::define_frontend_hooks
+	 * @covers ::define_scheduler_hooks
 	 */
-	public function test_frontend_hooks() {
+	public function test_scheduler_hooks() {
 
 		\WP_Mock::expectActionAdded(
-			'wp_enqueue_scripts',
-			array( new AnyInstance( Frontend::class ), 'enqueue_styles' )
+			'init',
+			array( new AnyInstance( Scheduler::class ), 'schedule_daily_update' )
 		);
 
 		\WP_Mock::expectActionAdded(
-			'wp_enqueue_scripts',
-			array( new AnyInstance( Frontend::class ), 'enqueue_scripts' )
+			Scheduler::UPDATE_HOOK_NAME,
+			array( new AnyInstance( Scheduler::class ), 'run_update_task' )
 		);
 
-		new BrianHenryIE\WC_Filter_Orders_By_Shipping_Method();
+		$api = $this->makeEmpty( API_Interface::class );
+		new BH_WC_Filter_Orders_By_Shipping_Method( $api );
 	}
+
 
 }

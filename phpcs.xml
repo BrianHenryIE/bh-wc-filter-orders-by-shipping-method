@@ -21,4 +21,5 @@
     <exclude-pattern>/wordpress/</exclude-pattern>
     <exclude-pattern>/wp-content/</exclude-pattern>
 
+    <arg name="colors"/>
 </ruleset>
