@@ -73,8 +73,8 @@ jobs:
       - name: Add updater
         env:
           code: |
-            \n\n$updateChecker = \$PLUGIN_USNAKE_Puc_v4_Factory::buildUpdateChecker(
-            	'https://github.com/brianhenryie/$PLUGIN_SLUG/',
+            \n\n$updateChecker = \Puc_v4_Factory::buildUpdateChecker(
+            	'https://github.com/BrianHenryIE/$PLUGIN_SLUG/',
             	__FILE__,
             	'$PLUGIN_SLUG'
             );

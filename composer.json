@@ -88,6 +88,11 @@
                 "erusev/parsedown": {
                     "files": ["Parsedown.php"]
                 }
+            },
+            "exclude_from_prefix": {
+                "packages": [
+                    "yahnis-elsts/plugin-update-checker"
+                ]
             }
         },
         "symlinks": {
