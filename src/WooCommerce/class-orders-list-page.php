@@ -14,6 +14,9 @@ use BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\API\API_Interface;
  * Class Orders_List_Page
  *
  * @package BrianHenryIE\WC_Filter_Orders_By_Shipping_Method\WooCommerce
+ *
+ * Disabling nonce requirement so links to this filter can be shared.
+ * phpcs:disable WordPress.Security.NonceVerification.Recommended
  */
 class Orders_List_Page {
 
@@ -42,9 +45,6 @@ class Orders_List_Page {
 	 * @see WP_Posts_List_Table::extra_tablenav()
 	 *
 	 * @since 1.0.0
-	 *
-	 * Disabling nonce requirement so links to this filter can be shared.
-     * phpcs:disable WordPress.Security.NonceVerification.Recommended
 	 */
 	public function print_filter_orders_by_shipping_method_ui(): void {
 		global $typenow;
@@ -88,17 +88,6 @@ class Orders_List_Page {
 		global $typenow;
 
 		if ( 'shop_order' !== $typenow ) {
-			return $vars;
-		}
-
-		if ( ! array_key_exists( '_wpnonce', $_GET ) ) {
-			return $vars;
-		}
-
-		// TODO not 100% sure on sanitizing action like this.
-		$action = ! array_key_exists( 'action', $_GET ) ? -1 : sanitize_title( wp_unslash( $_GET['action'] ) );
-
-		if ( ! wp_verify_nonce( wp_unslash( sanitize_key( $_GET['_wpnonce'] ) ), $action ) ) {
 			return $vars;
 		}
 
